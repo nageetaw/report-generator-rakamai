@@ -180,4 +180,4 @@ cython_debug/
 
 
 #local storage for audio files
-storage/
+audio_uploads/
