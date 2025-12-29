@@ -20,7 +20,9 @@ async def upload_audio(
 
     file_path, file_name = await save_uploaded_file(file, current_user.id)
 
-    audio = AudioFile(id=audio_id, filename=file_name, file_path=file_path)
+    audio = AudioFile(
+        id=audio_id, filename=file_name, file_path=file_path, user_id=current_user.id
+    )
 
     db.add(audio)
     await db.commit()
