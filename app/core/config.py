@@ -75,6 +75,12 @@ class Settings(BaseSettings):
             return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}-test"
         return f"{self.DB_ENGINE}://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}-test"
 
+    UPLOAD_DIR: str = os.getenv("UPLOAD_DIR", "uploads")
+    MAX_UPLOAD_SIZE: int = int(
+        os.getenv("MAX_UPLOAD_SIZE", "100000000")
+    )  # 100MB default
+    ALLOWED_AUDIO_EXTENSIONS: List[str] = [".mp3", ".wav", ".m4a"]
+
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
 
 
