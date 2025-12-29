@@ -11,7 +11,7 @@ from fastapi import APIRouter, UploadFile
 router = APIRouter()
 
 
-@router.post("/audio", response_model=AudioUploadResponse)
+@router.post("/upload", response_model=AudioUploadResponse)
 async def upload_audio(
     file: UploadFile, db: DBSessionDep, current_user: AuthUserDep
 ) -> Dict:
