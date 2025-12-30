@@ -81,6 +81,9 @@ class Settings(BaseSettings):
     )  # 100MB default
     ALLOWED_AUDIO_EXTENSIONS: List[str] = [".mp3", ".wav", ".m4a"]
 
+    ASSEMBLYAI_BASE_URL: str = os.getenv("ASSEMBLYAI_BASE_URL", "")
+    ASSEMBLYAI_API_KEY: str = os.getenv("ASSEMBLYAI_API_KEY", "")
+
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
 
 
