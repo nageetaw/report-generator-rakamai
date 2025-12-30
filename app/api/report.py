@@ -2,6 +2,7 @@ from typing import Dict
 
 from app.api.deps import AuthUserDep, DBSessionDep
 from app.models.audio import AudioFile
+from app.services.notes_generation.mistral_notes_generator import MistralNotesGenerator
 from app.services.transcription.assemblyai import AssemblyAITranscriber
 
 from fastapi import APIRouter, HTTPException, status
@@ -30,5 +31,9 @@ async def generate_report(
     async with AssemblyAITranscriber() as t:
         transcript_data = await t.transcribe(existing_file.file_path)
         print(transcript_data["transcript"], transcript_data["language_code"])
+
+    async with MistralNotesGenerator(model="mistral-medium-latest") as generator:
+        notes = await generator.generate(transcript_data["transcript"])
+        print(notes)
 
     return {}
