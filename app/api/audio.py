@@ -1,6 +1,6 @@
 from app.api.deps import AudioServiceDep, AuthUserDep
-from app.models.audio import AudioFile
 from app.schemas.audio import AudioUploadResponse
+
 
 from fastapi import APIRouter, UploadFile, status
 
@@ -15,5 +15,5 @@ async def upload_audio(
     file: UploadFile, service: AudioServiceDep, current_user: AuthUserDep
 ) -> AudioUploadResponse:
 
-    audio: AudioFile = await service.upload_audio(file, current_user.id)
+    audio = await service.upload_audio(file, current_user.id)
     return AudioUploadResponse(audio_id=audio.id)
