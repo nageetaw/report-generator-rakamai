@@ -19,7 +19,7 @@ class AudioService:
     def __init__(self, repo: AudioFileRepository):
         self.repo = repo
 
-    async def upload_audio(self, file: UploadFile, user_id: int) -> str:
+    async def upload_audio(self, file: UploadFile, user_id: int) -> AudioFile:
         try:
             file_path, file_name = await save_uploaded_file(file, user_id)
 

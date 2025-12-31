@@ -1,24 +1,19 @@
-from typing import Dict
-
-from app.api.deps import AuthUserDep, DBSessionDep
+from app.api.deps import AudioServiceDep, AuthUserDep
+from app.models.audio import AudioFile
 from app.schemas.audio import AudioUploadResponse
-from app.repositories.audio import AudioFileRepository
-from app.services.audio import AudioService
 
-from fastapi import APIRouter, UploadFile
+from fastapi import APIRouter, UploadFile, status
 
 
 router = APIRouter()
 
 
-@router.post("/upload", response_model=AudioUploadResponse)
+@router.post(
+    "/upload", status_code=status.HTTP_201_CREATED, response_model=AudioUploadResponse
+)
 async def upload_audio(
-    file: UploadFile, db: DBSessionDep, current_user: AuthUserDep
-) -> Dict:
+    file: UploadFile, service: AudioServiceDep, current_user: AuthUserDep
+) -> AudioUploadResponse:
 
-    repo = AudioFileRepository(db)
-    service = AudioService(repo)
-
-    audio_id = await service.upload_audio(file, current_user.id)
-
-    return AudioUploadResponse(audio_id=audio_id)
+    audio: AudioFile = await service.upload_audio(file, current_user.id)
+    return AudioUploadResponse(audio_id=audio.id)
