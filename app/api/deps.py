@@ -5,7 +5,9 @@ API dependencies.
 from datetime import datetime
 from typing import Annotated, Optional, cast
 
-from fastapi import Depends, HTTPException, status
+from app.repositories.audio import AudioFileRepository, AudioProcessingJobRepository
+from app.services.audio import AudioProcessingJobService, AudioService
+from fastapi import Depends, HTTPException, status, BackgroundTasks
 from fastapi.security import APIKeyHeader
 from jose import JWTError, jwt
 from sqlalchemy import select
@@ -80,3 +82,24 @@ async def get_current_user_token(
 
 
 TokenUserDep = Annotated[User, Depends(get_current_user_token)]
+
+
+def get_audio_service(db: DBSessionDep) -> AudioService:
+    repo = AudioFileRepository(db)
+    return AudioService(repo)
+
+
+AudioServiceDep = Annotated[AudioService, Depends(get_audio_service)]
+
+
+def get_audio_processing_job_service(
+    db: DBSessionDep, background_tasks: BackgroundTasks
+) -> AudioProcessingJobService:
+    job_repo = AudioProcessingJobRepository(db)
+    audio_repo = AudioFileRepository(db)
+    return AudioProcessingJobService(job_repo, audio_repo, background_tasks)
+
+
+AudioProcessJobServiceDep = Annotated[
+    AudioProcessingJobService, Depends(get_audio_processing_job_service)
+]
