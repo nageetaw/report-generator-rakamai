@@ -32,6 +32,7 @@ The report will include the Following:
 │   ├── schemas/             # Pydantic schemas
 │   ├── services/            # Business logic
 │   └── utils/               # Utility functions
+|   |__ repositories         # CURD operations
 ├── docker-compose.yml       # Docker Compose for production
 ├── docker-compose.dev.yml   # Docker Compose for development
 ├── Dockerfile               # Docker configuration
