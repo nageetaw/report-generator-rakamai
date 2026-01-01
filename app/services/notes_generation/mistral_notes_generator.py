@@ -58,14 +58,23 @@ class MistralNotesGenerator(BaseNotesGenerator):
         }
 
     async def __aenter__(self) -> "MistralNotesGenerator":
+        """Initialize async HTTP client for Mistral API calls."""
+
         self._client = httpx.AsyncClient(headers=self._headers, timeout=None)
         return self
 
     async def __aexit__(self, exc_type: Any, exc: Any, tb: Any) -> None:
+        """Ensure the underlying HTTP client is closed on context exit."""
+
         if self._client:
             await self._client.aclose()
 
     async def generate(self, transcript: str) -> Dict:
+        """Send transcript to Mistral and return parsed JSON notes.
+
+        The returned value is a dict matching the required notes schema.
+        """
+
         assert self._client is not None
 
         messages = [

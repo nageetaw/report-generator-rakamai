@@ -15,6 +15,11 @@ async def generate_report(
     current_user: AuthUserDep,
     service: AudioProcessJobServiceDep,
 ) -> ReportCreateOut:
+    """Create a background processing job for the provided audio id.
+
+    Returns the created job metadata (id, status, message).
+    """
+
     response = await service.create_bg_task(report_create=report_create)
     return ReportCreateOut(**response)
 
@@ -25,6 +30,8 @@ async def generate_report(
 async def get_job_status(
     job_id: str, service: AudioProcessJobServiceDep, current_user: AuthUserDep
 ) -> AudioJobStatusOut:
+    """Return the current status and any error for a processing job."""
+
     result = await service.get_job_status(job_id)
     return AudioJobStatusOut(**result)
 
@@ -33,4 +40,6 @@ async def get_job_status(
 async def download_report(
     job_id: str, current_user: AuthUserDep, service: AudioProcessJobServiceDep
 ) -> FileResponse:
+    """Return the generated PDF report file for the given job id."""
+
     return await service.download_report(job_id=job_id)
