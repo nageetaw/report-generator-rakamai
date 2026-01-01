@@ -84,8 +84,13 @@ class Settings(BaseSettings):
     ASSEMBLYAI_BASE_URL: str = os.getenv("ASSEMBLYAI_BASE_URL", "")
     ASSEMBLYAI_API_KEY: str = os.getenv("ASSEMBLYAI_API_KEY", "")
 
-    MISTRALAI_API_KEY: str = os.getenv("MISTRALAI_API_KEY", "")
-    MISTRALAI_BASE_URL: str = os.getenv("MISTRALAI_BASE_URL", "")
+    MISTRAL_API_KEY: str = os.getenv("MISTRAL_API_KEY", "")
+    MISTRAL_BASE_URL: str = os.getenv("MISTRAL_BASE_URL", "")
+    DEFAULT_MISTRAL_MODEL: str = os.getenv(
+        "DEFAULT_MISTRAL_MODEL", "mistral-medium-latest"
+    )
+
+    DEFAULT_REPORT_DIR: str = os.getenv("DEFAULT_REPORT_DIR", "reports")
 
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
 

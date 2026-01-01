@@ -10,12 +10,12 @@ class MistralNotesGenerator(BaseNotesGenerator):
     Meeting notes generator using Mistral LLM API
     """
 
-    def __init__(self, model: str = "mistral-medium-latest") -> None:
+    def __init__(self, model: str) -> None:
         self._model = model
         self._client: httpx.AsyncClient | None = None
-        self._base_url = settings.MISTRALAI_BASE_URL
+        self._base_url = settings.MISTRAL_BASE_URL
         self._headers = {
-            "Authorization": f"Bearer {settings.MISTRALAI_API_KEY}",
+            "Authorization": f"Bearer {settings.MISTRAL_API_KEY}",
             "Content-Type": "application/json",
         }
 
