@@ -12,9 +12,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     """Application settings class."""
 
-    PROJECT_NAME: str = "FastAPI API"
-    PROJECT_DESCRIPTION: str = "FastAPI template"
-    VERSION: str = "0.1.0"
+    PROJECT_NAME: str = "Report Generator"
+    PROJECT_DESCRIPTION: str = "Meeting report generator from audio uploads"
+    VERSION: str = "1.0.0"
     API_PREFIX: str = ""
     DEBUG: bool = os.getenv("DEBUG", "true").lower() == "true"
     DEV_MODE: bool = DEBUG
