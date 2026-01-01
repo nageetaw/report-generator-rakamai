@@ -99,14 +99,14 @@ The report will include the Following:
    # DB_HOST=localhost
    # DB_PORT=5432
    # DB_NAME=app
-   # UPLOAD_DIR = audio_uploads
+   # AUDIO_UPLOAD_DIR = audio
    # MAX_UPLOAD_SIZE = 100000000
    # ASSEMBLYAI_BASE_URL = "https://api.assemblyai.com/v2"
    # ASSEMBLYAI_API_KEY = your-api-key
    # MISTRAL_API_KEY = your-api-key
    # MISTRAL_BASE_URL = https://api.mistral.ai/v1
    # DEFAULT_MISTRAL_MODEL = mistral-medium-latest
-   # DEFAULT_REPORT_DIR = reports
+   # REPORT_UPLOAD_DIR = reports
    ```
 
 5. Run migrations:
@@ -170,8 +170,8 @@ The application is configured through environment variables which can be set in 
 | `DB_HOST` | Database host | `""` |
 | `DB_PORT` | Database port | `""` |
 | `DB_NAME` | Database name | `app.db` |
-| `UPLOAD_DIR` | Location of audio files | `audio_uploads` |
-| `DEFAULT_REPORT_DIR` | Location of reports | `reports` |
+| `AUDIO_UPLOAD_DIR` | Location of audio files | `audio` |
+| `REPORT_UPLOAD_DIR` | Location of reports | `reports` |
 | `MAX_UPLOAD_SIZE` | Max size of audio file | `100000000` |
 | `ASSEMBLYAI_BASE_URL` | URL | `https://api.assemblyai.com/v2` |
 | `ASSEMBLYAI_API_KEY` | API key| `""` |

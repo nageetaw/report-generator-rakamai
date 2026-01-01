@@ -1,11 +1,14 @@
 from app.api.deps import AudioServiceDep, AuthUserDep
-from app.schemas.audio import AudioUploadResponse
-
+from pydantic import BaseModel
 
 from fastapi import APIRouter, UploadFile, status
 
 
 router = APIRouter()
+
+
+class AudioUploadResponse(BaseModel):
+    audio_id: str
 
 
 @router.post(

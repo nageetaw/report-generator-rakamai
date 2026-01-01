@@ -75,22 +75,26 @@ class Settings(BaseSettings):
             return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}-test"
         return f"{self.DB_ENGINE}://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}-test"
 
-    UPLOAD_DIR: str = os.getenv("UPLOAD_DIR", "uploads")
+    # TO verify audio file size and extensions
     MAX_UPLOAD_SIZE: int = int(
-        os.getenv("MAX_UPLOAD_SIZE", "100000000")
+        os.getenv("MAX_UPLOAD_SIZE", 100 * 1024 * 1024)
     )  # 100MB default
     ALLOWED_AUDIO_EXTENSIONS: List[str] = [".mp3", ".wav", ".m4a"]
 
+    # Assembly ai base URL and API key
     ASSEMBLYAI_BASE_URL: str = os.getenv("ASSEMBLYAI_BASE_URL", "")
     ASSEMBLYAI_API_KEY: str = os.getenv("ASSEMBLYAI_API_KEY", "")
 
+    # Mistral ai base URL, model, and API key
     MISTRAL_API_KEY: str = os.getenv("MISTRAL_API_KEY", "")
     MISTRAL_BASE_URL: str = os.getenv("MISTRAL_BASE_URL", "")
     DEFAULT_MISTRAL_MODEL: str = os.getenv(
         "DEFAULT_MISTRAL_MODEL", "mistral-medium-latest"
     )
 
-    DEFAULT_REPORT_DIR: str = os.getenv("DEFAULT_REPORT_DIR", "reports")
+    # directories to upload audio file and reports
+    AUDIO_UPLOAD_DIR: str = os.getenv("AUDIO_UPLOAD_DIR", "uploads")
+    REPORT_UPLOAD_DIR: str = os.getenv("REPORT_UPLOAD_DIR", "reports")
 
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
 

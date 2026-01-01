@@ -8,7 +8,7 @@ from app.core.config import settings
 
 def ensure_upload_directory() -> Path:
     """Ensure upload directory exists and return its path."""
-    upload_path = Path(settings.UPLOAD_DIR)
+    upload_path = Path(settings.AUDIO_UPLOAD_DIR)
     upload_path.mkdir(parents=True, exist_ok=True)
     return upload_path
 
