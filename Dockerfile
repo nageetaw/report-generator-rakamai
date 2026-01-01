@@ -1,4 +1,4 @@
-FROM python:3.11-alpine
+FROM python:3.11-slim
 
 # set work directory
 WORKDIR /app
@@ -9,18 +9,15 @@ ENV PYTHONUNBUFFERED=1
 
 
 RUN pip install --upgrade pip
-COPY ./requirements.txt /app
-RUN pip install -r requirements.txt
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 # copy project
-COPY . /app
+COPY . .
+
+RUN useradd -m myuser && chown -R myuser /app
+USER myuser
 
 EXPOSE 8000
-
-
-
-# Make scripts executable
-RUN chmod +x start.sh start-dev.sh
-
 
 CMD ["./start.sh"]
