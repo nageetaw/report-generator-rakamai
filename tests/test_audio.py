@@ -26,7 +26,7 @@ async def test_upload_audio_success(
 
     files = {"file": ("test.mp3", b"dummy audio content", "audio/mpeg")}
     response = await async_client.post("/audio/upload", files=files, headers=headers)
-    assert response.status_code == 200
+    assert response.status_code == 201
     data = response.json()
     assert "audio_id" in data
 
