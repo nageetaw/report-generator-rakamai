@@ -14,6 +14,8 @@ class JobStatus(str, enum.Enum):
 
 
 class AudioFile(Base):
+    """Model to store details related to audio file uploaded by authenticated user."""
+
     __tablename__ = "audio_files"
 
     id = Column(String, primary_key=True)
@@ -31,6 +33,8 @@ class AudioFile(Base):
 
 
 class AudioProcessingJob(Base):
+    """Model to store audio processing jobs corresponds to audio file."""
+
     __tablename__ = "processing_jobs"
 
     id = Column(String, primary_key=True)

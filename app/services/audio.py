@@ -79,7 +79,7 @@ class AudioProcessingJobService:
             await self.repo.update_status(job_id, JobStatus.SUMMARIZED)
 
             os.makedirs("reports", exist_ok=True)
-            output_path = f"{settings.DEFAULT_REPORT_DIR}/report_{job_id}.pdf"
+            output_path = f"{settings.REPORT_UPLOAD_DIR}/report_{job_id}.pdf"
             PDFReportGenerator().export(
                 output_path=output_path, transcript=transcript, notes=notes
             )
@@ -88,14 +88,15 @@ class AudioProcessingJobService:
             await self.repo.update_status(job_id, JobStatus.FAILED, error=str(e))
 
     async def create_bg_task(self, report_create: ReportCreate) -> Dict:
-        """Create a processing job for the given audio and schedule it in background."""
+        """Create a processing job for the given audio."""
 
         audio_id = report_create.audio_id
-
         audio_file = await self.audio_repo.get(audio_id)
 
         if audio_file is None:
-            raise HTTPException(status_code=404, detail="Audio file not found")
+            raise HTTPException(
+                status_code=404, detail=f"Audio file with id:{audio_id} not found"
+            )
 
         file_path = audio_file.file_path
         job = AudioProcessingJob(
@@ -107,6 +108,7 @@ class AudioProcessingJobService:
         self.background_tasks.add_task(
             self.run_audio_processing_pipeline, job_id, file_path
         )
+
         return {
             "job_id": job_id,
             "status": JobStatus.CREATED,
@@ -114,11 +116,13 @@ class AudioProcessingJobService:
         }
 
     async def get_job_status(self, job_id: str) -> Dict:
-        """Return the current status and any error message for a job id."""
+        """Return the current status and any error message for a audio job id."""
 
         job = await self.repo.get(job_id)
         if job is None:
-            raise HTTPException(status_code=404, detail="Job not found")
+            raise HTTPException(
+                status_code=404, detail=f"Job with id:{job_id} not found"
+            )
 
         return {"job_id": job_id, "status": job.status, "error": job.error_message}
 
@@ -126,10 +130,27 @@ class AudioProcessingJobService:
         """Return FileResponse for the generated report if the job completed."""
 
         job = await self.repo.get(job_id)
-        if not job or job.status != JobStatus.SUMMARIZED:
-            raise HTTPException(status_code=404, detail="Report not ready or not found")
 
-        file_path = f"{settings.DEFAULT_REPORT_DIR}/report_{job_id}.pdf"
+        if not job:
+            raise HTTPException(
+                status_code=404,
+                detail="No any report generating job found with id:{job_id}",
+            )
+
+        if job.status == JobStatus.FAILED:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Audio processing failed, error: {job.error_message}",
+            )
+
+        if job.status != JobStatus.SUMMARIZED:
+            raise HTTPException(
+                status_code=202,
+                detail="Report is still being generated. Please try again in a few moments.",
+            )
+
+        file_path = f"{settings.REPORT_UPLOAD_DIR}/report_{job_id}.pdf"
+
         if not os.path.exists(file_path):
             raise HTTPException(status_code=404, detail="File missing on server")
 
