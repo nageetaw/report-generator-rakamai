@@ -23,7 +23,7 @@ class BaseRepository(Generic[ModelType]):
         result = await self.db.execute(stmt)
         record = result.scalar_one_or_none()
         if record:
-            return cast(Optional[ModelType], result.scalar_one_or_none())
+            return cast(Optional[ModelType], record)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Record does not exists."
         )

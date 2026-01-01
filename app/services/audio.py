@@ -2,12 +2,12 @@ from typing import Dict
 import os
 import uuid
 
-from app.core.config import Settings
+from app.core.config import settings
 from app.models.audio import AudioFile, AudioProcessingJob, JobStatus
 from app.repositories.audio import AudioFileRepository, AudioProcessingJobRepository
 from app.schemas.report import ReportCreate
 from app.services.notes_generation.mistral_notes_generator import MistralNotesGenerator
-from app.services.report_generation.pdf_generator import PDFReportGenerator
+from app.services.pdf_generator import PDFReportGenerator
 from app.services.transcription.assemblyai import AssemblyAITranscriber
 from app.utils.storage import save_uploaded_file
 
@@ -65,13 +65,13 @@ class AudioProcessingJobService:
             await self.repo.update_status(job_id, JobStatus.TRANSCRIBED)
 
             async with MistralNotesGenerator(
-                model=Settings.DEFAULT_MISTRAL_MODEL
+                model=settings.DEFAULT_MISTRAL_MODEL
             ) as generator:
                 notes = await generator.generate(transcript)
             await self.repo.update_status(job_id, JobStatus.SUMMARIZED)
 
             os.makedirs("reports", exist_ok=True)
-            output_path = f"{Settings.DEFAULT_REPORT_DIR}/report_{job_id}.pdf"
+            output_path = f"{settings.DEFAULT_REPORT_DIR}/report_{job_id}.pdf"
             PDFReportGenerator().export(
                 output_path=output_path, transcript=transcript, notes=notes
             )
@@ -115,7 +115,7 @@ class AudioProcessingJobService:
         if not job or job.status != JobStatus.SUMMARIZED:
             raise HTTPException(status_code=404, detail="Report not ready or not found")
 
-        file_path = f"{Settings.DEFAULT_REPORT_DIR}/report_{job_id}.pdf"
+        file_path = f"{settings.DEFAULT_REPORT_DIR}/report_{job_id}.pdf"
         if not os.path.exists(file_path):
             raise HTTPException(status_code=404, detail="File missing on server")
 
