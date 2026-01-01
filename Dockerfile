@@ -15,7 +15,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # copy project
 COPY . .
 
-RUN useradd -m myuser && chown -R myuser /app
+RUN useradd -m myuser && \
+    mkdir -p /app/uploads /app/reports /app/data && \
+    chown -R myuser:myuser /app
+
 USER myuser
 
 EXPOSE 8000
