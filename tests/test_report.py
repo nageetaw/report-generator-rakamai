@@ -1,3 +1,4 @@
+from typing import Dict
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -143,7 +144,7 @@ async def test_download_report_not_ready(
     token = create_access_token("test", user.id)
     headers = {"Authorization": f"Bearer {token}"}
 
-    async def _download() -> None:
+    async def _download(*args: tuple, **kwargs: Dict) -> None:
         raise HTTPException(status_code=404, detail="Report not ready")
 
     mock_service = SimpleNamespace(download_report=AsyncMock(side_effect=_download))
