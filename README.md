@@ -1,6 +1,12 @@
-# FastAPI Template
+# Report Generator
 
-A production-ready FastAPI template with authentication, async database operations, and Docker support.
+A production-ready FastAPI report generator application with authentication, async database operations, and Docker support.
+The app will allow logged in users to upload audio-files of meetings, and generate a report.
+The report will include the Following:
+- A short Summary.
+- Decisions made.
+- Action Items.
+- Transcript.
 
 ## Features
 
@@ -127,6 +133,16 @@ Once the application is running, you can access:
 
 - `GET /health` - Health check endpoint
 
+### Audio
+
+- `POST /audio/upload` - Upload audio file (returns `audio_id`)
+
+### Report
+- `POST /report/generate` - Create background job for a report from `audio_id` (returns `job_id`)
+- `GET /report/status/{job_id}` - Query processing status for a job
+- `GET /report/download/{job_id}` - Download generated PDF when job is `summarized`
+
+
 ## Configuration
 
 The application is configured through environment variables which can be set in a `.env` file:
@@ -145,6 +161,14 @@ The application is configured through environment variables which can be set in 
 | `DB_HOST` | Database host | `""` |
 | `DB_PORT` | Database port | `""` |
 | `DB_NAME` | Database name | `app.db` |
+| `UPLOAD_DIR` | Location of audio files | `audio_uploads` |
+| `DEFAULT_REPORT_DIR` | Location of reports | `reports` |
+| `MAX_UPLOAD_SIZE` | Max size of audio file | `100000000` |
+| `ASSEMBLYAI_BASE_URL` | URL | `https://api.assemblyai.com/v2` |
+| `ASSEMBLYAI_API_KEY` | API key| `""` |
+| `MISTRAL_BASE_URL` | URL | `https://api.mistral.ai/v1` |
+| `MISTRAL_API_KEY` | API key | `""` |
+| `DEFAULT_MISTRAL_MODEL` | Mistral model | `"mistral-medium-latest"` |
 
 ## Development
 

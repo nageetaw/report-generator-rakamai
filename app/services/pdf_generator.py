@@ -7,7 +7,11 @@ from reportlab.platypus import ListFlowable, ListItem
 
 
 class PDFReportGenerator:
+    """Utility to build PDF reports from transcript and structured notes."""
+
     def _section(self, title: str, items: List, styles: Dict) -> List:
+        """Create a titled section with bullet items for the PDF story."""
+
         blocks = []
 
         blocks.append(Paragraph(title, styles["Heading2"]))
@@ -31,6 +35,8 @@ class PDFReportGenerator:
         return blocks
 
     def export(self, *, transcript: str, notes: dict, output_path: str) -> None:
+        """Render the full report PDF at `output_path` using `notes` and `transcript`."""
+
         doc = SimpleDocTemplate(output_path, pagesize=A4)
         styles = getSampleStyleSheet()
         story = []
@@ -60,6 +66,8 @@ class PDFReportGenerator:
         doc.build(story)
 
     def _block(self, text: str, styles: Dict) -> List:
+        """Split text into paragraph blocks suitable for the PDF story."""
+
         blocks = []
         for line in text.splitlines():
             if line.strip():

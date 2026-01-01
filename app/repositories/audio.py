@@ -10,15 +10,21 @@ from sqlalchemy.orm import selectinload
 
 
 class AudioFileRepository(BaseRepository[AudioFile]):
+    """Repository for CRUD operations on `AudioFile` model."""
+
     def __init__(self, db: AsyncSession):
         super().__init__(db, AudioFile)
 
 
 class AudioProcessingJobRepository(BaseRepository[AudioProcessingJob]):
+    """Repository for `AudioProcessingJob` model and related helper queries."""
+
     def __init__(self, db: AsyncSession):
         super().__init__(db, AudioProcessingJob)
 
     async def get_with_audio(self, job_id: str) -> Optional[AudioProcessingJob]:
+        """Return a job joined with its related `AudioFile` by job id."""
+
         query = (
             select(AudioProcessingJob)
             .options(selectinload(AudioProcessingJob.audio_file))
@@ -31,6 +37,8 @@ class AudioProcessingJobRepository(BaseRepository[AudioProcessingJob]):
     async def update_status(
         self, job_id: str, status: JobStatus, error: Optional[str] = None
     ) -> None:
+        """Update status and optional error message for a processing job."""
+
         query = (
             update(AudioProcessingJob)
             .where(AudioProcessingJob.id == job_id)

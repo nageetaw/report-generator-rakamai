@@ -17,10 +17,14 @@ from fastapi.responses import FileResponse
 
 
 class AudioService:
+    """Service for handling audio file uploads and persistence."""
+
     def __init__(self, repo: AudioFileRepository):
         self.repo = repo
 
     async def upload_audio(self, file: UploadFile, user_id: int) -> AudioFile:
+        """Save uploaded audio to disk and create corresponding DB record."""
+
         try:
             file_path, file_name = await save_uploaded_file(file, user_id)
 
@@ -43,6 +47,8 @@ class AudioService:
 
 
 class AudioProcessingJobService:
+    """Service to manage audio processing jobs and background pipelines."""
+
     def __init__(
         self,
         repo: AudioProcessingJobRepository,
@@ -58,6 +64,8 @@ class AudioProcessingJobService:
         job_id: str,
         audio_path: str,
     ) -> None:
+        """Run the full processing pipeline: transcribe, summarize, and export PDF."""
+
         try:
             async with AssemblyAITranscriber() as t:
                 data = await t.transcribe(audio_path)
@@ -80,6 +88,8 @@ class AudioProcessingJobService:
             await self.repo.update_status(job_id, JobStatus.FAILED, error=str(e))
 
     async def create_bg_task(self, report_create: ReportCreate) -> Dict:
+        """Create a processing job for the given audio and schedule it in background."""
+
         audio_id = report_create.audio_id
 
         audio_file = await self.audio_repo.get(audio_id)
@@ -104,6 +114,8 @@ class AudioProcessingJobService:
         }
 
     async def get_job_status(self, job_id: str) -> Dict:
+        """Return the current status and any error message for a job id."""
+
         job = await self.repo.get(job_id)
         if job is None:
             raise HTTPException(status_code=404, detail="Job not found")
@@ -111,6 +123,8 @@ class AudioProcessingJobService:
         return {"job_id": job_id, "status": job.status, "error": job.error_message}
 
     async def download_report(self, job_id: str) -> FileResponse:
+        """Return FileResponse for the generated report if the job completed."""
+
         job = await self.repo.get(job_id)
         if not job or job.status != JobStatus.SUMMARIZED:
             raise HTTPException(status_code=404, detail="Report not ready or not found")
