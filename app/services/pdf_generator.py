@@ -1,9 +1,14 @@
 from typing import List, Dict
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.platypus import (
+    SimpleDocTemplate,
+    Paragraph,
+    Spacer,
+    ListFlowable,
+    ListItem,
+)
 from reportlab.lib.units import inch
-from reportlab.platypus import ListFlowable, ListItem
 
 
 class PDFReportGenerator:
