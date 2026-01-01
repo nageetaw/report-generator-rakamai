@@ -7,7 +7,7 @@ from app.models.audio import AudioFile, AudioProcessingJob, JobStatus
 from app.repositories.audio import AudioFileRepository, AudioProcessingJobRepository
 from app.schemas.report import ReportCreate
 from app.services.notes_generation.mistral_notes_generator import MistralNotesGenerator
-from app.services.report_generation.pdf_generator import PDFReportGenerator
+from app.services.pdf_generator import PDFReportGenerator
 from app.services.transcription.assemblyai import AssemblyAITranscriber
 from app.utils.storage import save_uploaded_file
 
