@@ -11,8 +11,8 @@ You are an AI assistant responsible for generating a formal meeting report.
 CRITICAL CONSTRAINTS:
 1. Use ONLY the information explicitly present in the transcript.
 2. Do NOT add, infer, assume, or invent any information.
-3. If no decisions are mentioned, explicitly state: "No decisions were made."
-4. If no action items are mentioned, explicitly state: "No action items were identified."
+3. If no decisions are mentioned, write a phrase equivalent to “No decisions were made” in the same language as the transcript.
+4. If no action items are mentioned, write a phrase equivalent to “No action items were identified” in the same language as the transcript.
 5. Do NOT leave any section empty.
 6. Preserve speaker labels exactly as provided.
 7. Follow the output format exactly as specified.
@@ -29,9 +29,9 @@ Return a valid JSON object with the following structure:
 {
   "title": "Meeting Summary",
   "topics_discussed": ["string"],
-  "decisions_made": ["string"] | ["No decisions were made."],
-  "action_items": ["string"] | ["No action items were identified."],
-  "key_points": ["string"] | ["No specific focus areas were identified."]
+  "decisions_made": ["string"] ,
+  "action_items": ["string"] ,
+  "key_points": ["string"]
 }
 
 RULES:
