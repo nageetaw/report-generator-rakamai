@@ -2,6 +2,7 @@ from typing import Dict
 import os
 import uuid
 
+from app.core.config import Settings
 from app.models.audio import AudioFile, AudioProcessingJob, JobStatus
 from app.repositories.audio import AudioFileRepository, AudioProcessingJobRepository
 from app.schemas.report import ReportCreate
@@ -64,13 +65,13 @@ class AudioProcessingJobService:
             await self.repo.update_status(job_id, JobStatus.TRANSCRIBED)
 
             async with MistralNotesGenerator(
-                model="mistral-medium-latest"
+                model=Settings.DEFAULT_MISTRAL_MODEL
             ) as generator:
                 notes = await generator.generate(transcript)
             await self.repo.update_status(job_id, JobStatus.SUMMARIZED)
 
             os.makedirs("reports", exist_ok=True)
-            output_path = f"reports/report_{job_id}.pdf"
+            output_path = f"{Settings.DEFAULT_REPORT_DIR}/report_{job_id}.pdf"
             PDFReportGenerator().export(
                 output_path=output_path, transcript=transcript, notes=notes
             )
@@ -114,7 +115,7 @@ class AudioProcessingJobService:
         if not job or job.status != JobStatus.SUMMARIZED:
             raise HTTPException(status_code=404, detail="Report not ready or not found")
 
-        file_path = f"reports/report_{job_id}.pdf"
+        file_path = f"{Settings.DEFAULT_REPORT_DIR}/report_{job_id}.pdf"
         if not os.path.exists(file_path):
             raise HTTPException(status_code=404, detail="File missing on server")
 
