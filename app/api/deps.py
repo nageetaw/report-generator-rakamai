@@ -85,6 +85,7 @@ TokenUserDep = Annotated[User, Depends(get_current_user_token)]
 
 
 def get_audio_service(db: DBSessionDep) -> AudioService:
+    """Get the audio service."""
     repo = AudioFileRepository(db)
     return AudioService(repo)
 
@@ -95,6 +96,7 @@ AudioServiceDep = Annotated[AudioService, Depends(get_audio_service)]
 def get_audio_processing_job_service(
     db: DBSessionDep, background_tasks: BackgroundTasks
 ) -> AudioProcessingJobService:
+    """Get the audio processing job service."""
     job_repo = AudioProcessingJobRepository(db)
     audio_repo = AudioFileRepository(db)
     return AudioProcessingJobService(job_repo, audio_repo, background_tasks)
