@@ -3,8 +3,41 @@ version: "3.8"
 services:
   web:
     build: .
-    command: ./start.sh
-    volumes:
-      - .:/app
+    image: report-generator-app:${VERSION:-latest}
+    restart: always
     ports:
       - "8000:8000"
+    environment:
+      - DEBUG=false
+      - DB_ENGINE=postgresql
+      - DB_USER=user
+      - DB_PASSWORD=pass
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=report_generator_db
+    volumes:
+      - production_uploads:/app/audio
+      - production_reports:/app/reports
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:15-alpine
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=report_generator_db
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user -d report_generator_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  production_uploads:
+  production_reports:
+  postgres_data:
