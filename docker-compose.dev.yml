@@ -7,12 +7,9 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DEBUG=false
-      - DATABASE_URL=sqlite:////app/db.sqlite3
+      - DEBUG=true
+      - DB_ENGINE=sqlite
+      - DB_NAME=db.sqlite3
+      - VERSION=${VERSION:-1.0.0-dev}
     volumes:
       - .:/app
-    depends_on: []
-
-  db:
-    image: postgres:15-alpine
-    profiles: [ "donotrun" ]
