@@ -84,6 +84,7 @@ class Settings(BaseSettings):
     # Assembly ai base URL and API key
     ASSEMBLYAI_BASE_URL: str = os.getenv("ASSEMBLYAI_BASE_URL", "")
     ASSEMBLYAI_API_KEY: str = os.getenv("ASSEMBLYAI_API_KEY", "")
+    DEFAULT_ASSEMBLYAI_MODEL: str = os.getenv("DEFAULT_ASSEMBLYAI_MODEL", "")
 
     # Mistral ai base URL, model, and API key
     MISTRAL_API_KEY: str = os.getenv("MISTRAL_API_KEY", "")
