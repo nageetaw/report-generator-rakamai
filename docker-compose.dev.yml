@@ -4,9 +4,15 @@ services:
   web:
     build: .
     command: ./start-dev.sh
-    volumes:
-      - .:/app
     ports:
       - "8000:8000"
     environment:
-      - DEBUG=true
+      - DEBUG=false
+      - DATABASE_URL=sqlite:////app/db.sqlite3
+    volumes:
+      - .:/app
+    depends_on: []
+
+  db:
+    image: postgres:15-alpine
+    profiles: [ "donotrun" ]
