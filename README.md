@@ -1,12 +1,62 @@
-# Report Generator
+# FastAPI Audio Meeting Report Generator
 
-A production-ready FastAPI report generator application with authentication, async database operations, and Docker support.
-The app will allow logged in users to upload audio-files of meetings, and generate a report.
-The report will include the Following:
-- A short Summary.
-- Decisions made.
-- Action Items.
-- Transcript.
+A production-ready **FastAPI-based report generation application** with authentication, asynchronous operations, and Docker support.
+
+The application allows **authenticated users** to upload audio files (e.g., meeting recordings) and automatically generate a **PDF meeting report**.
+
+
+## Generated Report Includes
+- Title  
+- Summary  
+- Topics Discussed  
+- Decisions Made  
+- Action Items  
+- Transcript  
+
+
+## Supported Audio & Limits
+- Supported audio formats: **`.mp3`, `.wav`, `.m4a`**
+- Maximum audio file size: **100 MB**
+
+
+
+## Models & APIs
+
+### Transcription
+- Uses AssemblyAI’s **Universal** speech model (default model)
+
+### Summary & Notes Generation
+- Uses **`mistral-medium-latest`** via the Chat Completion API  
+- Other models such as Mistral Small and Mistral Large were tested, but Medium performs best for this task  
+- Feel free to experiment with different Mistral models
+
+
+
+## Architecture Notes & Limitations
+- Currently supports **fixed transcription and chat-completion models** via external APIs  
+- Future versions may:
+  - Support **local LLMs**
+  - Introduce a **generic provider interface** for multiple transcription and LLM services
+
+### Storage
+- Audio files and generated reports are currently stored using **local storage**
+- This is not recommended for production use
+- Future versions will migrate storage to **S3 buckets** or equivalent cloud storage
+
+### Intermediate Results
+- Transcriptions are not currently stored
+- Persisting intermediate results could enable:
+  - Downloading reports in multiple formats
+  - Regenerating summaries using different models
+
+
+## Requirements
+To run this project, you will need **two API keys**:
+- **AssemblyAI API key**
+  - Universal model includes **$50 free credit**
+- **Mistral API key**
+  - Includes limited free access
+
 
 ## Features
 
@@ -103,11 +153,12 @@ The report will include the Following:
    # MAX_UPLOAD_SIZE = 100000000
    # ASSEMBLYAI_BASE_URL = "https://api.assemblyai.com/v2"
    # ASSEMBLYAI_API_KEY = your-api-key
+   # DEFAULT_ASSEMBLYAI_MODEL = universal
    # MISTRAL_API_KEY = your-api-key
    # MISTRAL_BASE_URL = https://api.mistral.ai/v1
    # DEFAULT_MISTRAL_MODEL = mistral-medium-latest
    # REPORT_UPLOAD_DIR = reports
-   # VERSION = 1.1.0 # current version of app
+   # VERSION = 1.2.0 # current version of app
    ```
 
 5. Run migrations:
@@ -176,6 +227,7 @@ The application is configured through environment variables which can be set in 
 | `MAX_UPLOAD_SIZE` | Max size of audio file | `100000000` |
 | `ASSEMBLYAI_BASE_URL` | URL | `https://api.assemblyai.com/v2` |
 | `ASSEMBLYAI_API_KEY` | API key| `""` |
+| `DEFAULT_ASSEMBLYAI_MODEL` | Speech model | `universal` |
 | `MISTRAL_BASE_URL` | URL | `https://api.mistral.ai/v1` |
 | `MISTRAL_API_KEY` | API key | `""` |
 | `DEFAULT_MISTRAL_MODEL` | Mistral model | `"mistral-medium-latest"` |
@@ -235,3 +287,13 @@ The project includes Docker configurations for both development and production:
 2. Create a feature branch: `git checkout -b ft/my-feature`
 3. Commit your changes: `git commit -m 'Add my feature'`
 4. Push to the branch: `git push origin ft/my-feature`
+
+
+## Authors
+
+This project was developed using a FastAPI template provided by **Rakam AI** (https://www.rakam.ai/).
+
+The template includes authentication, user login APIs, and the initial project setup.
+
+- **Clemmie Melegi** (Rakam AI) — Provided the FastAPI template, authentication system, and initial application setup  
+- **Nageeta Kumari** — Completed the take-home assignment, worked on **Audio** and **Audio** apis including bussiness logic for transcribing and report generation.
