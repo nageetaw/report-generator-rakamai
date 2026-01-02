@@ -5,7 +5,7 @@ A production-ready **FastAPI-based report generation application** with authenti
 The application allows **authenticated users** to upload audio files (e.g., meeting recordings) and automatically generate a **PDF meeting report**.
 
 
-## Generated Report Includes
+## Generated Report Includes:
 - Title  
 - Summary  
 - Topics Discussed  
@@ -50,14 +50,6 @@ The application allows **authenticated users** to upload audio files (e.g., meet
   - Regenerating summaries using different models
 
 
-## Requirements
-To run this project, you will need **two API keys**:
-- **AssemblyAI API key**
-  - Universal model includes **$50 free credit**
-- **Mistral API key**
-  - Includes limited free access
-
-
 ## Features
 
 - **Modern Python**: Type hints, async/await syntax, and the latest FastAPI features
@@ -97,6 +89,11 @@ To run this project, you will need **two API keys**:
 
 - Python 3.11+
 - Docker (optional)
+- To run this project, you will need **two API keys**:
+  - **AssemblyAI API key**
+    - Universal model includes **$50 free credit**
+  - **Mistral API key**
+    - Includes limited free access
 
 ## Installation
 
@@ -296,4 +293,4 @@ This project was developed using a FastAPI template provided by **Rakam AI** (ht
 The template includes authentication, user login APIs, and the initial project setup.
 
 - **Clemmie Melegi** (Rakam AI) — Provided the FastAPI template, authentication system, and initial application setup  
-- **Nageeta Kumari** — Completed the take-home assignment, worked on **Audio** and **Report** apis including bussiness logic for transcribing and report generation.
+- **Nageeta Kumari** — Completed the take-home assignment, worked on **Audio** and **Report** APIs including business logic for transcribing and report generation.
