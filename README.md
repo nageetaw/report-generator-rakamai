@@ -55,7 +55,7 @@ The report will include the Following:
 1. Clone the repository:
    ```bash
    git clone <your-repo-url>
-   cd fastapi-template
+   cd report-generator-rakamai
    ```
 
 2. Start the application with Docker Compose:
@@ -74,7 +74,7 @@ The report will include the Following:
 1. Clone the repository:
    ```bash
    git clone <your-repo-url>
-   cd fastapi-template
+   cd report-generator-rakamai
    ```
 
 2. Create and activate a virtual environment:
@@ -107,6 +107,7 @@ The report will include the Following:
    # MISTRAL_BASE_URL = https://api.mistral.ai/v1
    # DEFAULT_MISTRAL_MODEL = mistral-medium-latest
    # REPORT_UPLOAD_DIR = reports
+   # VERSION = 1.0.0 # current version of app
    ```
 
 5. Run migrations:
@@ -178,6 +179,7 @@ The application is configured through environment variables which can be set in 
 | `MISTRAL_BASE_URL` | URL | `https://api.mistral.ai/v1` |
 | `MISTRAL_API_KEY` | API key | `""` |
 | `DEFAULT_MISTRAL_MODEL` | Mistral model | `"mistral-medium-latest"` |
+| `VERSION` |  App version | `""` |
 
 ## Development
 
