@@ -14,7 +14,7 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str = "Report Generator"
     PROJECT_DESCRIPTION: str = "Meeting report generator from audio uploads"
-    VERSION: str = "1.0.0"
+    VERSION: str = os.getenv("VERSION", "")
     API_PREFIX: str = ""
     DEBUG: bool = os.getenv("DEBUG", "true").lower() == "true"
     DEV_MODE: bool = DEBUG
