@@ -46,9 +46,17 @@ class PDFReportGenerator:
         styles = getSampleStyleSheet()
         story = []
 
+        # Title
         story.append(Paragraph(notes["title"], styles["Title"]))
         story.append(Spacer(1, 0.4 * inch))
 
+        # Summary
+        story.append(Paragraph("Summary", styles["Heading2"]))
+        story.append(Spacer(1, 0.15 * inch))
+        story.append(Paragraph(notes["summary"], styles["Normal"]))
+        story.append(Spacer(1, 0.3 * inch))
+
+        # Sections
         story.extend(
             self._section("Topics Discussed", notes["topics_discussed"], styles)
         )
@@ -57,16 +65,14 @@ class PDFReportGenerator:
 
         story.extend(self._section("Action Items", notes["action_items"], styles))
 
-        story.extend(
-            self._section("Key Points / Areas of Focus", notes["key_points"], styles)
-        )
-
+        # Transcript
         story.append(Spacer(1, 0.5 * inch))
         story.append(Paragraph("Transcript", styles["Heading2"]))
         story.append(Spacer(1, 0.2 * inch))
 
         for line in transcript.splitlines():
             story.append(Paragraph(line, styles["Normal"]))
+            story.append(Spacer(1, 0.15 * inch))
 
         doc.build(story)
 

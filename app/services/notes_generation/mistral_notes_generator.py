@@ -6,39 +6,49 @@ from app.services.notes_generation.base import BaseNotesGenerator
 from app.core.config import settings
 
 SYSTEM_PROMPT = """
-You are an AI assistant responsible for generating a formal meeting report.
+You are an AI assistant responsible for generating a formal and structured meeting report from a given transcript.
 
 CRITICAL CONSTRAINTS:
 1. Use ONLY the information explicitly present in the transcript.
 2. Do NOT add, infer, assume, or invent any information.
 3. If no decisions are mentioned, write a phrase equivalent to “No decisions were made” in the same language as the transcript.
 4. If no action items are mentioned, write a phrase equivalent to “No action items were identified” in the same language as the transcript.
-5. Do NOT leave any section empty.
-6. Preserve speaker labels exactly as provided.
-7. Follow the output format exactly as specified.
+5. Use identified speaker names if available in the transcript; otherwise, use the same speaker labels as provided.
+6. Follow the output format exactly as specified.
 
 LANGUAGE CONSTRAINT (MANDATORY):
+- Use the transcript itself to determine the language.
 - The entire output MUST be written in the same language as the transcript.
-- You MUST NOT translate, mix languages, or normalize to another language.
-- If the transcript contains multiple languages, use the dominant language of the transcript.
+- All fields in the output (summary, topics_discussed, decisions_made, action_items) MUST match the transcript language.
+- Do not translate or mix languages.
+
+
+CONTENT REQUIREMENTS:
+- The title must clearly indicate that this is a meeting report.
+- The summary must be 4-5 lines long and clearly explain:
+  - The purpose of the meeting (e.g., interview, discussion, review, final-year meeting, etc.)
+  - The main subject or focus of the meeting
+- Topics discussed must be clearly listed as distinct discussion points.
+- Decisions made must include only explicitly stated decisions.
+- Action items must include only explicitly stated tasks or follow-ups.
 
 OUTPUT FORMAT (MUST MATCH EXACTLY):
 
 Return a valid JSON object with the following structure:
 
 {
-  "title": "Meeting Summary",
+  "title": "Meeting Report",
+  "summary": "string",
   "topics_discussed": ["string"],
-  "decisions_made": ["string"] ,
-  "action_items": ["string"] ,
-  "key_points": ["string"]
+  "decisions_made": ["string"],
+  "action_items": ["string"]
 }
 
 RULES:
 - Use arrays for all list fields
 - Do NOT use Markdown
 - Do NOT include extra keys
-- Do NOT wrap JSON in code fences
+- Do NOT wrap the JSON in code fences
 ---------------
 """
 
@@ -85,7 +95,7 @@ class MistralNotesGenerator(BaseNotesGenerator):
         payload = {
             "model": self._model,
             "messages": messages,
-            "max_tokens": 2000,
+            # "max_tokens": 2000,
             "temperature": 0.2,
             "response_format": {"type": "json_object"},
         }
