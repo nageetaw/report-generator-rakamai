@@ -4,9 +4,11 @@ services:
   web:
     build: .
     command: ./start-dev.sh
-    volumes:
-      - .:/app
     ports:
       - "8000:8000"
     environment:
       - DEBUG=true
+      - DB_ENGINE=sqlite
+      - DB_NAME=db.sqlite3
+    volumes:
+      - .:/app

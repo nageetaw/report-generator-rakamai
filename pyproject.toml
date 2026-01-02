@@ -3,14 +3,14 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "fastapi_template"
-version = "0.1.0"
-description = "A FastAPI template"
+name = "report-generator"
+version = "1.1.0"
+description = "Report Generator"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [
-    { name = "Clément Malige" }
+    { name = "Clément Malige and Nageeta Kumari" }
 ]
 dependencies = [
     "fastapi>=0.110.0",
