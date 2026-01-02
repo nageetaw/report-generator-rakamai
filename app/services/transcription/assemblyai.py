@@ -97,6 +97,7 @@ class AssemblyAITranscriber(BaseTranscriber):
         Build the transcription configuration payload.
         """
         return {
+            "speech_models": [settings.DEFAULT_ASSEMBLYAI_MODEL],
             "audio_url": audio_url,
             "speaker_labels": True,
             "language_detection": True,
