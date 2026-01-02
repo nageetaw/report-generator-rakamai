@@ -296,4 +296,4 @@ This project was developed using a FastAPI template provided by **Rakam AI** (ht
 The template includes authentication, user login APIs, and the initial project setup.
 
 - **Clemmie Melegi** (Rakam AI) — Provided the FastAPI template, authentication system, and initial application setup  
-- **Nageeta Kumari** — Completed the take-home assignment, worked on **Audio** and **Audio** apis including bussiness logic for transcribing and report generation.
+- **Nageeta Kumari** — Completed the take-home assignment, worked on **Audio** and **Report** apis including bussiness logic for transcribing and report generation.
