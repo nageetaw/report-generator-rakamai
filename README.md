@@ -107,7 +107,7 @@ The report will include the Following:
    # MISTRAL_BASE_URL = https://api.mistral.ai/v1
    # DEFAULT_MISTRAL_MODEL = mistral-medium-latest
    # REPORT_UPLOAD_DIR = reports
-   # VERSION = 1.0.0 # current version of app
+   # VERSION = 1.1.0 # current version of app
    ```
 
 5. Run migrations:
